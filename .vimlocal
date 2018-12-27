@@ -1,0 +1,2 @@
+autocmd BufWritePost,FileWritePost src/* :VimuxRunCommand "clear; node-gyp rebuild"
+
