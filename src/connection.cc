@@ -24,13 +24,12 @@ namespace NodePulseSimple
       Nan::New<v8::FunctionTemplate>(New);
 
     cons->SetClassName(Nan::New("Connection").ToLocalChecked());
-    cons->InstanceTemplate()->SetInternalFieldCount(0);
+    cons->InstanceTemplate()->SetInternalFieldCount(1);
 
     // Configure the object's runtime prototype.
     ///Nan::SetPrototypeMethod(tpl, "write", Write);
     //Nan::SetPrototypeMethod(tpl, "read", Read);
-    //
-    Nan::SetMethod(cons, "connect", Connect);
+    //    Nan::SetMethod(cons, "connect", Connect);
 
     // Make the constructor use the function from the template we created.
     constructor.Reset(cons->GetFunction());
@@ -45,15 +44,6 @@ namespace NodePulseSimple
   //However we do not allow the Connection to be instantiated in ES land.
   void Connection::New(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
-    Nan::ThrowTypeError(Nan::New("Connection: use connect() instead!")
-        .ToLocalChecked());
-
-  }
-
-   void Connection::Connect(const Nan::FunctionCallbackInfo<v8::Value>& info) {
-
-    Nan::EscapableHandleScope scope;
-
     int flag = 0;
     pa_simple *handle = NULL;
 
@@ -65,14 +55,14 @@ namespace NodePulseSimple
 
     if(info.Length() != 1) {
 
-      Nan::ThrowTypeError("connect(): incorrect number of arguments!");
+      Nan::ThrowTypeError("Connection: incorrect number of arguments!");
       return;
 
     } 
 
     if (!info[0]->IsString()) {
 
-      Nan::ThrowTypeError("connect(): argument name must be a string!");
+      Nan::ThrowTypeError("Connection: argument name must be a string!");
       return;
 
     }
@@ -83,7 +73,7 @@ namespace NodePulseSimple
 
     if(len > NODE_PULSE_SIMPLE_MAX_NAME_LENGTH) {
 
-      Nan::ThrowTypeError("connect(): Name too long!");
+      Nan::ThrowTypeError("Connection: Name too long!");
       return;
 
     }
@@ -102,19 +92,15 @@ namespace NodePulseSimple
                         std::string(pa_strerror(flag));
 
       Nan::ThrowTypeError(msg.c_str());
-
       return;
 
     }
 
     Connection* c = new Connection(handle);
     
-    v8::Local<v8::Object> obj = Nan::New<v8::Object>();
+    c->Wrap(info.This());
 
-    c->Wrap(obj);
-
-    info.GetReturnValue().Set(obj);
-
+    info.GetReturnValue().Set(info.This());
 
   }
 
