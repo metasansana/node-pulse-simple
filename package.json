@@ -15,6 +15,8 @@
     },
     "devDependencies": {
         "@quenk/must": "^1.0.5",
+        "@quenk/noni": "^1.11.1",
+        "@types/mocha": "^5.2.5",
         "@types/node": "^10.12.18",
         "mocha": "^5.2.0",
         "ts-node": "^7.0.1",

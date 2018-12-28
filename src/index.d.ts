@@ -1,15 +1,12 @@
 import * as Buffer from 'buffer';
 
-declare module 'index' {
+export class Connection {
 
-    class Connection {
+    constructor(name: string);
 
-        constructor(name: string);
+    write(data: Buffer): void;
 
-        write(data: Buffer): void;
-
-        close(): void;
-
-    }
+    close(): void;
 
 }
+
