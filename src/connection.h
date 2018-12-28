@@ -1,6 +1,6 @@
-#ifndef NODE_PULSE_SIMPLE_H
-#define NODE_PULSE_SIMPLE_H 
-#define NODE_PULSE_SIMPLE_MAX_NAME_LENGTH  1024 * 4
+
+#ifndef NODE_PULSE_SIMPLE_CONNECTION_H
+#define NODE_PULSE_SIMPLE_CONNECTION_H
 
 #include <nan.h>
 #include <pulse/simple.h>
