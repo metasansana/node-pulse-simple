@@ -18,7 +18,8 @@ namespace NodePulseSimple
     public:
       explicit Connection(pa_simple *h);
       static void Init(v8::Local<v8::Object> exports);
-      void doWrap(const Nan::FunctionCallbackInfo<v8::Value>& info);
+      static void Connect(const Nan::FunctionCallbackInfo<v8::Value>& info);
+      void Write(const Nan::FunctionCallbackInfo<v8::Value>& info);
 
     private:
       pa_simple *handle;
@@ -26,6 +27,9 @@ namespace NodePulseSimple
 
       static void New(const Nan::FunctionCallbackInfo<v8::Value>& info);
       static Nan::Persistent<v8::Function> constructor;
+      static Nan::Persistent<v8::Function> real_constructor;
+
+
  //     static void write(void data);
  //     static void close();
 
