@@ -28,6 +28,7 @@ namespace NodePulseSimple
 
     // Configure the object's runtime prototype.
     Nan::SetPrototypeMethod(cons, "write", Write);
+    Nan::SetPrototypeMethod(cons, "close", Close);
 
     // Make the constructor use the function from the template we created.
     constructor.Reset(cons->GetFunction());
@@ -41,6 +42,18 @@ namespace NodePulseSimple
   //New is used to create new instances of a Connection.
   //However we do not allow the Connection to be instantiated in ES land.
   void Connection::New(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+
+  if (!(info.IsConstructCall())) {
+
+    const int argc = 1;
+    v8::Local<v8::Value> argv[argc] = { info[0] };
+    v8::Local<v8::Function> cons = Nan::New<v8::Function>(constructor);
+    v8::Local<v8::Object> obj = Nan::NewInstance(cons, argc, argv).ToLocalChecked();
+
+    info.GetReturnValue().Set(obj);
+    return;
+
+  }
 
     int flag = 0;
     pa_simple *handle = NULL;

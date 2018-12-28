@@ -2,11 +2,12 @@
     "name": "node-pulse-simple",
     "version": "0.0.1",
     "description": "Pulse Audio Simple API",
-    "main": "index.js",
     "gypfile": true,
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "author": "Lasana Murray <lmurray@trinistorm.org> (https://trinistorm.org)",
     "license": "Apache-2.0",
     "dependencies": {
@@ -14,6 +15,9 @@
     },
     "devDependencies": {
         "@quenk/must": "^1.0.5",
-        "mocha": "^5.2.0"
+        "@types/node": "^10.12.18",
+        "mocha": "^5.2.0",
+        "ts-node": "^7.0.1",
+        "typescript": "^3.2.2"
     }
 }

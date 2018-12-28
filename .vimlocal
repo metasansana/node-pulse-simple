@@ -1,2 +1,2 @@
-autocmd BufWritePost,FileWritePost src/* :VimuxRunCommand "clear; node-gyp rebuild"
+autocmd BufWritePost,FileWritePost src/* :VimuxRunCommand "clear; make --warn-undefined"
 
