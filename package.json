@@ -1,5 +1,5 @@
 {
-    "name": "node-pulse-simple",
+    "name": "@metasansana/pulse-simple",
     "version": "0.0.1",
     "description": "Pulse Audio Simple API",
     "gypfile": true,
