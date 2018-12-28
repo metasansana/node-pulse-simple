@@ -27,9 +27,7 @@ namespace NodePulseSimple
     cons->InstanceTemplate()->SetInternalFieldCount(1);
 
     // Configure the object's runtime prototype.
-    ///Nan::SetPrototypeMethod(tpl, "write", Write);
-    //Nan::SetPrototypeMethod(tpl, "read", Read);
-    //    Nan::SetMethod(cons, "connect", Connect);
+    Nan::SetPrototypeMethod(cons, "write", Write);
 
     // Make the constructor use the function from the template we created.
     constructor.Reset(cons->GetFunction());
@@ -101,6 +99,64 @@ namespace NodePulseSimple
     c->Wrap(info.This());
 
     info.GetReturnValue().Set(info.This());
+
+  }
+
+  void Connection::Write(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+
+    if(info.Length() != 1) {
+
+      Nan::ThrowTypeError("Connection#write: invalid argument count!");
+      return;
+
+    }
+
+    if(!(info[0]->IsArrayBufferView())) {
+
+      Nan::ThrowTypeError("Connection#write: argument 1 must be an ArrayBufferView!");
+      return;
+
+    }
+
+    int flag = 0;
+    v8::Local<v8::Object> obj = info[0]->ToObject();
+    size_t len = node::Buffer::Length(obj);
+    char* buf = node::Buffer::Data(obj);
+    Connection* con = Nan::ObjectWrap::Unwrap<Connection>(info.Holder());
+    
+    if(pa_simple_write(con->handle, buf, len, &flag) < 0) {
+
+      std::string msg = std::string(__FILE__) +
+                        std::string("pa_simple_write() failed: %s\n") +
+                        std::string(pa_strerror(flag));
+
+      Nan::ThrowTypeError(msg.c_str());
+      return;
+
+    }
+
+    if(pa_simple_drain(con->handle, &flag) < 0) {
+
+      std::string msg = std::string(__FILE__) +
+                        std::string("pa_simple_drain() failed: %s\n") +
+                        std::string(pa_strerror(flag));
+
+      Nan::ThrowTypeError(msg.c_str());
+      return;
+
+    }
+
+  }
+
+  void Connection::Close(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+
+    Connection* that = Nan::ObjectWrap::Unwrap<Connection>(info.Holder());
+
+    if(that->handle) {
+
+      pa_simple_free(that->handle);
+
+    }
 
   }
 
