@@ -18,7 +18,6 @@ namespace NodePulseSimple
     public:
       explicit Connection(pa_simple *h);
       static void Init(v8::Local<v8::Object> exports);
-      static void Connect(const Nan::FunctionCallbackInfo<v8::Value>& info);
       void Write(const Nan::FunctionCallbackInfo<v8::Value>& info);
 
     private:
